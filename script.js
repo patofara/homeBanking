@@ -34,23 +34,7 @@ function getLogin(email,password) {
     })
 }
 
-/* async function getLogin (email, password) {
-    var data = {
-        email,
-        password
-    }
 
-    let searchApi =  (`http://localhost:3000/login`, {
-        method: 'POST', 
-        body: JSON.stringify(data),
-        headers:{
-            'Content-Type': 'application/json'
-        }
-    }); 
-    autocompletado = await fetch(searchApi);
-    return autocompletado.json()
-    
-} */
 
 
 

@@ -1,6 +1,8 @@
 // const { model } = require("mongoose")
 const jwt = require("jsonwebtoken");
 const db = require("../routes/conexion")
+require('dotenv').config()
+
 
 // require('dotenv').config()
 // const dotenv = require('db')
@@ -8,7 +10,7 @@ const db = require("../routes/conexion")
 //     jwtClave: process.env.jwtClave
 // })
 
-var jwtClave = "Password_deseado";
+var jwtClave = process.env.JWT_CLAVE;
 
 var codigoToken; 
 
@@ -46,7 +48,6 @@ const datosLogin = (req, res, next) => {
     }
 
     if (validateUser(email, password)) {
-
         next()
     }
     else {
@@ -64,8 +65,10 @@ const validacionJwt = (req, res, next) => {
         if (err) {
             res.send('No está autorizado');
         }
+        else{
         req.user = decoded;
         next()
+        }
     });
 }
 
@@ -77,8 +80,6 @@ function tokenGenerado(nombre, isAdmin) {
     } 
     
     var token = jwt.sign(payload, jwtClave);
-
-    //envio Token
     console.log(token)
     return token
 }
@@ -125,10 +126,10 @@ function validarEmail(valor) {
 
 const validateUser = async (email, password) => {
     const users = await db.query(`SELECT * FROM users`);
-    const userSelected = users.find(e => e.email.toString().toUpperCase() === email.toUpperCase().trim())
+    const userSelected = users.find(e => e.EMAIL.toUpperCase() === email.toUpperCase().trim())
     if (userSelected) {
-        if (userSelected.password.toUpperCase() == password.toUpperCase().trim()) {
-              codigoToken = tokenGenerado(userSelected.nombre, userSelected.isAdmin)
+        if (userSelected.PASSWORD.toUpperCase() == password.toUpperCase().trim()) {
+              codigoToken = tokenGenerado(userSelected.NOMBRE, userSelected.isAdmin)
             return true;
 
         }
